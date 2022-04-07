@@ -13,6 +13,8 @@ import {
 } from 'chart.js';
 import './workspace.css'
 
+import DownArrow from '../../assets/images/down_arrow.png'
+
 function WorkSpace() {
 
     const [selectedCoin, setSelectedCoin] = useState({ name: 'Bitcoin', price: 445, key: 'BTC' })
@@ -82,8 +84,8 @@ function WorkSpace() {
             // },
             {
                 label: 'Predicted Value',
-                data:  [...new Array(15)]
-                .map(() => Math.round(Math.random() * 200)).map((i, index) => i),
+                data: [...new Array(15)]
+                    .map(() => Math.round(Math.random() * 200)).map((i, index) => i),
                 borderColor: 'yellow',
                 backgroundColor: 'yellow',
 
@@ -96,7 +98,7 @@ function WorkSpace() {
 
         datasets: [
             {
-                label: 'Current Value',
+                label: 'Actual Value',
                 data: [...new Array(15)]
                     .map(() => Math.round(Math.random() * 200)).map((i, index) => i),
                 borderColor: 'aqua',
@@ -145,12 +147,27 @@ function WorkSpace() {
                 <div className='sideBar'
 
                 >
-                    <div>
-                        {[{ name: 'Bitcoin', price: 445, key: 'BTC' },
-                        { name: 'Etherium', price: 445, key: 'ETC' },
+                    <div className='coinWrpr' >
+                        {[{ name: 'Bitcoin', price: 436, key: 'BTC' },
+                        { name: 'Etherium', price: 445, key: 'ETH' },
+                        { name: 'Binance', price: 445, key: 'BNB' },
+                        { name: 'Doge', price: 445, key: 'DOGE' },
                         { name: 'LiteCoin', price: 445, key: 'LTC' },
-                        { name: 'Bitcoin1', price: 445, key: 'B1TC' },]
-                            .map(coin => <CoinComponent coin={coin} />)}
+                        { name: 'Maker', price: 445, key: 'MKR' },
+                        { name: 'Cardano', price: 445, key: 'ADA' },
+                        { name: 'Monero', price: 445, key: 'XMR' },
+                        { name: 'Stellar', price: 445, key: 'XLM' },
+                        { name: 'IOTA', price: 445, key: 'MIOTA' },
+                        { name: 'EOS.IO', price: 445, key: 'EOS' },
+                        { name: 'Bitcoin Cash', price: 445, key: 'BCH' },
+
+                        ].map(coin => <CoinComponent coin={coin} />)}
+
+
+                    </div>
+                    <div className='overlay' >
+                        <img src={DownArrow} style={{ width: 25, height: 25, marginTop: 10 }} />
+
                     </div>
                 </div>
 
@@ -179,7 +196,7 @@ function WorkSpace() {
                         <Line
                             options={options}
                             data={data2}
-                            style={{ width: 500, height: '50vh', color: 'yellow', }}
+                            style={{ width: 500, height: '70vh', color: 'yellow', }}
                         />
 
                     </div>

@@ -29,6 +29,34 @@
   margin: 0 20px;
   font-size: 25px;
 }
+.workSpace .coinWrpr {
+  height: 80vh;
+  overflow-y: scroll;
+  position: relative;
+}
+.overlay {
+  margin: 5px 60px;
+  padding: 40px 30px 20px 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* justify-content: center; */
+  /* border-radius: 10px; */
+  background: linear-gradient(184deg, transparent, rgba(0, 0, 0, 1) 100%);
+  background-image: linear-gradient(
+    180deg,
+    rgba(255, 0, 0, 0),
+    rgba(0, 0, 0, 1)
+  );
+  color: black;
+  cursor: pointer;
+  position: absolute;
+  bottom: 33px;
+  width: 100px;
+  height: 0px;
+  /* background:red; */
+  /* right: -20px; */
+}
 /* Coin================ */
 .coinComp {
   margin: 10px 60px;
@@ -42,6 +70,10 @@
   background-color: #fdf6ec;
   color: black;
   cursor: pointer;
+  width: 100px;
+}
+.coinComp:last-child {
+  margin-bottom: 0px;
 }
 .coinComp:hover {
   background-color: #14dfba;
@@ -50,4 +82,10 @@
 .coinComp h3 {
   padding: 0;
   margin: 0;
+  text-align: center;
+}
+
+::-webkit-scrollbar {
+  width: 0; /* Remove scrollbar space */
+  background: transparent; /* Optional: just make scrollbar invisible */
 }
