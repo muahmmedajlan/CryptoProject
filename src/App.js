@@ -6,10 +6,10 @@ import WorkSpace from './pages/workSpace/WorkSpace';
 function App() {
   return (
   
-    <BrowserRouter>
+    <BrowserRouter >
       <Routes>
-        <Route path="/" exact element={<Home />} />
         <Route path="/work-space" exact element={<WorkSpace />} />
+        <Route path="/" exact element={<Home />} />
       </Routes>
     </BrowserRouter>
   );

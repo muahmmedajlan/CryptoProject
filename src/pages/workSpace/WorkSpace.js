@@ -23,17 +23,56 @@ function WorkSpace() {
                 position: 'top',
             },
             title: {
-                display: true,
+                display: false,
                 text: 'Chart.js Line Chart',
             },
         },
     };
 
-    const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+    const foreCastLabelCreator = () => {
+        let date = new Date();
+        let timeArray = [];
+        for (let i = 0; i < 15; i++) {
+            timeArray.push(formatAMPM(date))
+            date.setMinutes(date.getMinutes() + 1)
+        }
 
-    const data = {
-        labels,
-        
+        // console.log(timeArray)
+        return timeArray
+    }
+
+    const previousPredictionLabelCreator = () => {
+        let date = new Date();
+        let timeArray = [];
+        for (let i = 0; i < 15; i++) {
+            timeArray.push(formatAMPM(date))
+            date.setMinutes(date.getMinutes() - 1)
+        }
+
+        // console.log(timeArray)
+        return timeArray.reverse();
+    }
+
+
+    function formatAMPM(date) {
+        var hours = date.getHours();
+        var minutes = date.getMinutes();
+        var ampm = hours >= 12 ? 'pm' : 'am';
+        hours = hours % 12;
+        hours = hours ? hours : 12; // the hour '0' should be '12'
+        minutes = minutes < 10 ? '0' + minutes : minutes;
+        var strTime = hours + ':' + minutes + ' ' + ampm;
+        return strTime;
+    }
+    useEffect(() => {
+        foreCastLabelCreator()
+    }, [])
+
+
+
+    const data1 = {
+        labels: foreCastLabelCreator(),
+
         datasets: [
             // {
             //     label: 'Dataset 1',
@@ -43,9 +82,32 @@ function WorkSpace() {
             // },
             {
                 label: 'Predicted Value',
-                data: labels.map((i, index) => index + i.length),
+                data:  [...new Array(15)]
+                .map(() => Math.round(Math.random() * 200)).map((i, index) => i),
                 borderColor: 'yellow',
                 backgroundColor: 'yellow',
+
+            },
+        ],
+    };
+
+    const data2 = {
+        labels: previousPredictionLabelCreator(),
+
+        datasets: [
+            {
+                label: 'Current Value',
+                data: [...new Array(15)]
+                    .map(() => Math.round(Math.random() * 200)).map((i, index) => i),
+                borderColor: 'aqua',
+                backgroundColor: 'aqua',
+            },
+            {
+                label: 'Predicted Value',
+                data: [...new Array(15)]
+                    .map(() => Math.round(Math.random() * 200)).map((i, index) => i),
+                borderColor: 'ghostwhite',
+                backgroundColor: 'ghostwhite',
 
             },
         ],
@@ -73,9 +135,7 @@ function WorkSpace() {
             <p>{coin.price}</p>
         </div>)
     }
-    useEffect(() => {
 
-    })
     return (
         <div
             className='workSpace'
@@ -99,13 +159,30 @@ function WorkSpace() {
                         <h2>{selectedCoin.key}</h2>
                         <p>${selectedCoin.price}</p>
                     </div>
-                    <p>Forcaste 15 minutes</p>
-                    <Line
-                        options={options}
-                        data={data}
-                        style={{ width: 500, height: '50vh',color:'yellow', }}
-                    />
 
+                    <div
+                        style={{ marginTop: 50 }}
+                    >
+                        <p>Forcaste 15 minutes</p>
+                        <Line
+                            options={options}
+                            data={data1}
+                            style={{ width: 500, height: '50vh', color: 'yellow', }}
+                        />
+                    </div>
+
+                    <div
+                        style={{ marginTop: 50 }}
+                    >
+
+                        <p>Previous Prediction</p>
+                        <Line
+                            options={options}
+                            data={data2}
+                            style={{ width: 500, height: '50vh', color: 'yellow', }}
+                        />
+
+                    </div>
                 </div>
                 <div style={{ flex: 3 }} ></div>
             </div>
