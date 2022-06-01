@@ -19,7 +19,10 @@ function Home() {
                         Use it with ease
                     </h1>
                     <div className='line' />
-                    <p>;lakdjflk; ldjf l;jdf  ldsjkf la;jd a;l j</p>
+                    <p>A cryptocurrency forecasting system that predicts the next day
+                        <br /> value of the world's 12 popular cryptocurrencies. It makes use of
+                        <br /> machine learning algorithms that are quite accurate.
+                        <br /> Take a look and invest your money safely ...</p>
                     <div
                         className='btn'
                         onClick={() => navigate('/work-space')}
