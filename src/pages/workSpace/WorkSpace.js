@@ -12,10 +12,12 @@ import {
     Legend,
 } from 'chart.js';
 import './workspace.css'
-
+import HomeImg from '../../assets/images/home.png'
 import DownArrow from '../../assets/images/down_arrow.png'
+import axios from 'axios';
 
 function WorkSpace() {
+
 
     const [selectedCoin, setSelectedCoin] = useState({ name: 'Bitcoin', price: 445, key: 'BTC' })
     const options = {
@@ -30,6 +32,26 @@ function WorkSpace() {
             },
         },
     };
+
+    const getCoinData = async () => {
+        try {
+            let response = await axios.get('https://sandbox-api.coinmarketcap.com/v1/cryptocurrency/listings/latest', {
+                headers: {
+                    'X-CMC_PRO_API_KEY': '6b2657a7-4861-4f19-aa89-8a793c261d6e',
+                },
+            });
+
+            if (response) {
+                // success
+                const json = response.data;
+                console.log(json);
+            }
+        } catch (ex) {
+            // response = null;
+
+        }
+
+    }
 
     const foreCastLabelCreator = () => {
         let date = new Date();
@@ -126,8 +148,10 @@ function WorkSpace() {
     const CoinComponent = ({ coin }) => {
         return (<div className='coinComp'
             style={selectedCoin.name == coin.name ? {
-                backgroundColor: '#0d9078',
-                color: 'white'
+                // backgroundColor: '#0d9078',
+                color: 'white',
+                border: `1px solid #0d9078`,
+                transform: `scale(1.1)`,
 
             } : {}}
             onClick={() => setSelectedCoin(coin)}
@@ -137,29 +161,39 @@ function WorkSpace() {
             <p>{coin.price}</p>
         </div>)
     }
-
+    useEffect(() => {
+        getCoinData()
+    }, [])
     return (
         <div
             className='workSpace'
+            style={{
+                background: `url(${HomeImg})`,
+                backgroundSize: 'cover'
+            }}
         >
             <Navbar />
-            <div className='sec_1' >
+            <div className='sec_1'
+
+            >
                 <div className='sideBar'
 
                 >
                     <div className='coinWrpr' >
-                        {[{ name: 'Bitcoin', price: 436, key: 'BTC' },
-                        { name: 'Etherium', price: 445, key: 'ETH' },
-                        { name: 'Binance', price: 445, key: 'BNB' },
-                        { name: 'Doge', price: 445, key: 'DOGE' },
-                        { name: 'LiteCoin', price: 445, key: 'LTC' },
-                        { name: 'Maker', price: 445, key: 'MKR' },
-                        { name: 'Cardano', price: 445, key: 'ADA' },
-                        { name: 'Monero', price: 445, key: 'XMR' },
-                        { name: 'Stellar', price: 445, key: 'XLM' },
-                        { name: 'IOTA', price: 445, key: 'MIOTA' },
-                        { name: 'EOS.IO', price: 445, key: 'EOS' },
-                        { name: 'Bitcoin Cash', price: 445, key: 'BCH' },
+                        {[
+
+                            { name: 'Etherium', price: 445, key: 'ETH' },
+                            { name: 'Etherium classic', price: 445, key: 'ETC' },
+                            { name: 'EOS', price: 445, key: 'EOS' },
+                            { name: 'Cardano', price: 445, key: 'ADA' },
+                            { name: 'Doge', price: 445, key: 'DOGE' },
+                            { name: 'IOTA', price: 445, key: 'MIOTA' },
+                            { name: 'LiteCoin', price: 445, key: 'LTC' },
+                            { name: 'Maker', price: 445, key: 'MKR' },
+                            { name: 'Monero', price: 445, key: 'XMR' },
+                            { name: 'Stellar', price: 445, key: 'XLM' },
+                            { name: 'Tron', price: 445, key: 'TRX' },
+                            { name: 'ZCash', price: 445, key: 'ZEC' },
 
                         ].map(coin => <CoinComponent coin={coin} />)}
 
@@ -172,23 +206,29 @@ function WorkSpace() {
                 </div>
 
                 <div className='graph_container'>
-                    <div className='heading_wrpr' >
-                        <h2>{selectedCoin.key}</h2>
-                        <p>${selectedCoin.price}</p>
-                    </div>
-
                     <div
-                        style={{ marginTop: 50 }}
+                        className='graph_wrpr'
+                        style={{ backdropFilter: `blur(100px)` }}
                     >
-                        <p>Forcaste 15 minutes</p>
-                        <Line
-                            options={options}
-                            data={data1}
-                            style={{ width: 500, height: '50vh', color: 'yellow', }}
-                        />
+                        <div className='heading_wrpr' >
+                            <h2>{selectedCoin.key}</h2>
+                            <p>${selectedCoin.price}</p>
+                        </div>
+
+                        <div
+                            style={{ paddingTop: 50, backdropFilter: `blur(100px)` }}
+                        >
+                            <p>Forcaste 15 minutes</p>
+                            <Line
+                                options={options}
+                                data={data1}
+                                style={{ width: 500, height: '50vh', color: 'yellow', }}
+
+                            />
+                        </div>
                     </div>
 
-                    <div
+                    {/* <div
                         style={{ marginTop: 50 }}
                     >
 
@@ -199,7 +239,7 @@ function WorkSpace() {
                             style={{ width: 500, height: '70vh', color: 'yellow', }}
                         />
 
-                    </div>
+                    </div> */}
                 </div>
                 <div style={{ flex: 3 }} ></div>
             </div>

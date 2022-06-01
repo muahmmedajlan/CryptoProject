@@ -11,6 +11,7 @@ function Navbar() {
         onClick={() => navigate('/')}
       >Home</div>
       <div>About</div>
+      <div>Contact</div>
     </div>
   )
 }

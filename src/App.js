@@ -8,8 +8,8 @@ function App() {
   
     <BrowserRouter >
       <Routes>
-        <Route path="/work-space" exact element={<WorkSpace />} />
         <Route path="/" exact element={<Home />} />
+        <Route path="/work-space" exact element={<WorkSpace />} />
       </Routes>
     </BrowserRouter>
   );

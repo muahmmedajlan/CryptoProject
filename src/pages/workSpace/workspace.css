@@ -1,11 +1,20 @@
 .workSpace {
-  background: linear-gradient(
-    90deg,
-    rgba(4, 14, 37, 1) 0%,
-    rgba(1, 14, 45, 1) 100%
-  );
+  /* height: 100vh; */
+  position: relative;
+}
+.workSpace::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  z-index: -1;
 }
 .workSpace .sec_1 {
+  padding-top: 100px;
+  /* backdrop-filter: blur(10px); */
+  height: 100%;
   display: flex;
 }
 .workSpace .sec_1 .sideBar {
@@ -15,8 +24,14 @@
 .workSpace .sec_1 .graph_container {
   flex: 5;
   color: white;
+  /* background-color: white; */
+  height: 70%;
+}
+.workSpace .sec_1 .graph_wrpr {
+  padding: 10px 20px;
 }
 .workSpace .sec_1 .heading_wrpr {
+  /* backdrop-filter: blur(100px); */
   display: flex;
   align-items: center;
 }
@@ -61,23 +76,27 @@
 .coinComp {
   margin: 10px 60px;
   padding: 20px 30px;
-  background-color: aqua;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   border-radius: 10px;
-  background-color: #fdf6ec;
+  /* background-color: #fdf6ec; */
   color: black;
   cursor: pointer;
   width: 100px;
+  backdrop-filter: blur(100px);
+  color: white;
 }
 .coinComp:last-child {
   margin-bottom: 0px;
 }
 .coinComp:hover {
-  background-color: #14dfba;
-  color: white;
+  /* background-color: #14dfba;
+   */
+  border: 1px solid #0d9078;
+  transform: scale(1.1);
+  transition: all 0.5s;
 }
 .coinComp h3 {
   padding: 0;
