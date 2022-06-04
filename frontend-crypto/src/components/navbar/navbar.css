@@ -1,0 +1,12 @@
+.navBar {
+  padding: 20px;
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: row;
+}
+.navBar div {
+  /* background-color: #05bb9a; */
+  padding: 5px 20px;
+  color: white;
+  font-size: 20px;
+}

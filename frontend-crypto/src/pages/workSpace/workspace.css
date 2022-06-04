@@ -1,0 +1,110 @@
+.workSpace {
+  /* height: 100vh; */
+  position: relative;
+}
+.workSpace::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  z-index: -1;
+}
+.workSpace .sec_1 {
+  padding-top: 100px;
+  /* backdrop-filter: blur(10px); */
+  height: 100%;
+  display: flex;
+}
+.workSpace .sec_1 .sideBar {
+  flex: 2;
+  padding: 0 20px 0 50px;
+}
+.workSpace .sec_1 .graph_container {
+  flex: 5;
+  color: white;
+  /* background-color: white; */
+  height: 70%;
+}
+.workSpace .sec_1 .graph_wrpr {
+  padding: 10px 20px;
+}
+.workSpace .sec_1 .heading_wrpr {
+  /* backdrop-filter: blur(100px); */
+  display: flex;
+  align-items: center;
+}
+.workSpace .sec_1 h2 {
+  padding: 0;
+  margin: 0;
+  font-size: 55px;
+}
+.workSpace .sec_1 p {
+  margin: 0 20px;
+  font-size: 25px;
+}
+.workSpace .coinWrpr {
+  height: 80vh;
+  overflow-y: scroll;
+  position: relative;
+}
+.overlay {
+  margin: 5px 60px;
+  padding: 40px 30px 20px 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* justify-content: center; */
+  /* border-radius: 10px; */
+  background: linear-gradient(184deg, transparent, rgba(0, 0, 0, 1) 100%);
+  background-image: linear-gradient(
+    180deg,
+    rgba(255, 0, 0, 0),
+    rgba(0, 0, 0, 1)
+  );
+  color: black;
+  cursor: pointer;
+  position: absolute;
+  bottom: 33px;
+  width: 100px;
+  height: 0px;
+  /* background:red; */
+  /* right: -20px; */
+}
+/* Coin================ */
+.coinComp {
+  margin: 10px 60px;
+  padding: 20px 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  /* background-color: #fdf6ec; */
+  color: black;
+  cursor: pointer;
+  width: 100px;
+  backdrop-filter: blur(100px);
+  color: white;
+}
+.coinComp:last-child {
+  margin-bottom: 0px;
+}
+.coinComp:hover {
+  /* background-color: #14dfba;
+   */
+  border: 1px solid #0d9078;
+  transform: scale(1.1);
+  transition: all 0.5s;
+}
+.coinComp h3 {
+  padding: 0;
+  margin: 0;
+  text-align: center;
+}
+
+::-webkit-scrollbar {
+  width: 0; /* Remove scrollbar space */
+  background: transparent; /* Optional: just make scrollbar invisible */
+}
