@@ -15,6 +15,8 @@ import './workspace.css'
 import HomeImg from '../../assets/images/home.png'
 import DownArrow from '../../assets/images/down_arrow.png'
 import axios from 'axios';
+import { CRYPTO_API } from '../../utils/apikeys';
+import Spinner from '../../components/spinner/Spinner';
 
 function WorkSpace() {
 
@@ -22,7 +24,7 @@ function WorkSpace() {
     const [selectedCoin, setSelectedCoin] = useState({ name: 'Bitcoin', price: 445, key: 'BTC' })
 
     const [forecastData, setForecastData] = useState([])
-    const [loading, setLoading] = useState(true)
+    const [loading, setLoading] = useState(false)
 
     const [coins, setCoins] = useState([
         { name: 'Ethereum', price: 445, key: 'ETH' },
@@ -51,8 +53,15 @@ function WorkSpace() {
                 display: false,
                 text: 'Chart.js Line Chart',
             },
+            
         },
     };
+
+    const getCurrentPrice = async () => {
+        console.log(CRYPTO_API, 'api')
+        await axios.get("https://api.nomics.com/v1/currencies/ticker?key=" + CRYPTO_API + "&ids=BTC,ETH,XRP&interval=1d,30d&convert=EUR&platform-currency=ETH&per-page=100&page=1")
+            .then(response => console.log(response.data))
+    }
 
     const getForecastData = async (coinName) => {
         setLoading(true)
@@ -72,9 +81,14 @@ function WorkSpace() {
                 let data = response.data;
                 // data = JSON.Parse(data)
                 // data.map((d, id) => data[id] = -1 * parseInt(d))
-                console.log(data)
 
-                setForecastData(data.split(','))
+                let dataArray = data.split(',')
+                dataArray[0] = dataArray[0].split('[')[1]
+                dataArray[dataArray.length - 1] = dataArray[dataArray.length - 1].split(']')[0]
+                dataArray.map((a, id) => dataArray[id] = Number(a.trim()).toFixed(2))
+                console.log(dataArray, 'arr')
+                setForecastData(dataArray)
+
                 // forecastData[0] = forecastData[0].slice(0, 1)
                 // forecastData[29] = forecastData[29].slice(0, -1)
             }
@@ -82,6 +96,7 @@ function WorkSpace() {
 
         } catch (error) {
             console.error(error)
+            setLoading(false)
         }
     }
 
@@ -141,11 +156,6 @@ function WorkSpace() {
 
         return date.toLocaleDateString();
     }
-    useEffect(() => {
-        foreCastLabelCreator()
-        getForecastData('ethereum')
-    }, [])
-
 
 
     const data1 = {
@@ -163,8 +173,7 @@ function WorkSpace() {
                 data: forecastData,
                 borderColor: 'yellow',
                 backgroundColor: 'yellow',
-
-
+                labelColor:'white'
             },
         ],
     };
@@ -216,10 +225,12 @@ function WorkSpace() {
         </div>)
     }
     useEffect(() => {
+        foreCastLabelCreator()
+        getForecastData('ethereum')
         getCoinData()
+        getCurrentPrice()
     }, [])
 
-    if (loading) return <div><h1>Loading</h1></div>
 
     return (
         <div
@@ -248,26 +259,30 @@ function WorkSpace() {
                 </div>
 
                 <div className='graph_container'>
+
                     <div
                         className='graph_wrpr'
                         style={{ backdropFilter: `blur(100px)` }}
                     >
-                        <div className='heading_wrpr' >
-                            <h2>{selectedCoin.key}</h2>
-                            <p>${selectedCoin.price}</p>
-                        </div>
+                        {loading ? <Spinner /> :
+                            <>
+                                <div className='heading_wrpr' >
+                                    <h2>{selectedCoin.key}</h2>
+                                    <p>${selectedCoin.price}</p>
+                                </div>
 
-                        <div
-                            style={{ paddingTop: 50, backdropFilter: `blur(100px)` }}
-                        >
-                            <p>Tomorrow's price will be {forecastData[29]}</p>
-                            <Line
-                                options={options}
-                                data={data1}
-                                style={{ width: 500, height: '50vh', color: 'yellow', }}
+                                <div
+                                    style={{ paddingTop: 50, backdropFilter: `blur(100px)` }}
+                                >
+                                    <p>Tomorrow's price will be {forecastData[29]}</p>
+                                    <Line
+                                        options={options}
+                                        data={data1}
+                                        style={{ width: 500, height: '50vh', color: 'yellow', }}
 
-                            />
-                        </div>
+                                    />
+                                </div>
+                            </>}
                     </div>
 
                     {/* <div
@@ -285,7 +300,7 @@ function WorkSpace() {
                 </div>
                 <div style={{ flex: 3 }} ></div>
             </div>
-        </div>
+        </div >
     )
 }
 

@@ -25,10 +25,11 @@
   flex: 5;
   color: white;
   /* background-color: white; */
-  height: 70%;
+  height: 420px;
 }
 .workSpace .sec_1 .graph_wrpr {
   padding: 10px 20px;
+  height: 420px;
 }
 .workSpace .sec_1 .heading_wrpr {
   /* backdrop-filter: blur(100px); */
