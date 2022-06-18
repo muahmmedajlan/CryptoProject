@@ -25,6 +25,7 @@ function WorkSpace() {
 
     const [forecastData, setForecastData] = useState([])
     const [loading, setLoading] = useState(false)
+    const [currentPrice, setCurrentPrice] = useState(0)
 
     const [coins, setCoins] = useState([
         { name: 'Ethereum', price: 445, key: 'ETH' },
@@ -32,7 +33,7 @@ function WorkSpace() {
         { name: 'EOS', price: 445, key: 'EOS' },
         { name: 'Cardano', price: 445, key: 'ADA' },
         { name: 'Dogecoin', price: 445, key: 'DOGE' },
-        { name: 'IOTA', price: 445, key: 'MIOTA' },
+        // { name: 'IOTA', price: 445, key: 'MIOTA' },
         { name: 'LiteCoin', price: 445, key: 'LTC' },
         { name: 'Maker', price: 445, key: 'MKR' },
         { name: 'Monero', price: 445, key: 'XMR' },
@@ -53,15 +54,11 @@ function WorkSpace() {
                 display: false,
                 text: 'Chart.js Line Chart',
             },
-            
+
         },
     };
 
-    const getCurrentPrice = async () => {
-        console.log(CRYPTO_API, 'api')
-        await axios.get("https://api.nomics.com/v1/currencies/ticker?key=" + CRYPTO_API + "&ids=BTC,ETH,XRP&interval=1d,30d&convert=EUR&platform-currency=ETH&per-page=100&page=1")
-            .then(response => console.log(response.data))
-    }
+
 
     const getForecastData = async (coinName) => {
         setLoading(true)
@@ -86,11 +83,8 @@ function WorkSpace() {
                 dataArray[0] = dataArray[0].split('[')[1]
                 dataArray[dataArray.length - 1] = dataArray[dataArray.length - 1].split(']')[0]
                 dataArray.map((a, id) => dataArray[id] = Number(a.trim()).toFixed(2))
-                console.log(dataArray, 'arr')
                 setForecastData(dataArray)
 
-                // forecastData[0] = forecastData[0].slice(0, 1)
-                // forecastData[29] = forecastData[29].slice(0, -1)
             }
             setLoading(false)
 
@@ -173,7 +167,7 @@ function WorkSpace() {
                 data: forecastData,
                 borderColor: 'yellow',
                 backgroundColor: 'yellow',
-                labelColor:'white'
+                labelColor: 'white'
             },
         ],
     };
@@ -209,6 +203,28 @@ function WorkSpace() {
         Legend
     );
     const CoinComponent = ({ coin }) => {
+        const [price, setPrice] = useState()
+
+        const getCurrentPrice = async (key) => {
+            try {
+                let response = await axios.get("https://api.binance.com/api/v3/ticker/price?symbol=" + key + 'USDT')
+                if (response.status == 200) {
+                    return setPrice(response.data.price)
+                } else {
+                    return 'error'
+                }
+            } catch (error) {
+
+            }
+        }
+
+
+        useEffect(() => {
+            getCurrentPrice(coin.key)
+        }, [])
+
+
+
         return (<div className='coinComp'
             style={selectedCoin.name == coin.name ? {
                 // backgroundColor: '#0d9078',
@@ -221,14 +237,13 @@ function WorkSpace() {
 
         >
             <h3>{coin.name}</h3>
-            <p>{coin.price}</p>
+            <p style={{ fontSize: 14, marginTop: 5 }} >{price ? Number(price).toFixed(2) : 'loading..'}</p>
         </div>)
     }
     useEffect(() => {
         foreCastLabelCreator()
         getForecastData('ethereum')
         getCoinData()
-        getCurrentPrice()
     }, [])
 
 
@@ -274,7 +289,8 @@ function WorkSpace() {
                                 <div
                                     style={{ paddingTop: 50, backdropFilter: `blur(100px)` }}
                                 >
-                                    <p>Tomorrow's price will be {forecastData[29]}</p>
+
+                                    <p>Tomorrow's price: {forecastData[29]}</p>
                                     <Line
                                         options={options}
                                         data={data1}
