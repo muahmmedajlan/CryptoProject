@@ -12,7 +12,7 @@ import {
     Legend,
 } from 'chart.js';
 import './workspace.css'
-import HomeImg from '../../assets/images/home.png'
+import HomeImg from '../../assets/images/home.jpg'
 import DownArrow from '../../assets/images/down_arrow.png'
 import axios from 'axios';
 import { CRYPTO_API } from '../../utils/apikeys';
@@ -28,18 +28,18 @@ function WorkSpace() {
     const [currentPrice, setCurrentPrice] = useState(0)
 
     const [coins, setCoins] = useState([
-        { name: 'Ethereum', price: 445, key: 'ETH' },
-        { name: 'Ethereum classic', price: 445, key: 'ETC' },
-        { name: 'EOS', price: 445, key: 'EOS' },
-        { name: 'Cardano', price: 445, key: 'ADA' },
-        { name: 'Dogecoin', price: 445, key: 'DOGE' },
-        // { name: 'IOTA', price: 445, key: 'MIOTA' },
-        { name: 'LiteCoin', price: 445, key: 'LTC' },
-        { name: 'Maker', price: 445, key: 'MKR' },
-        { name: 'Monero', price: 445, key: 'XMR' },
-        { name: 'Stellar', price: 445, key: 'XLM' },
-        { name: 'Tron', price: 445, key: 'TRX' },
-        { name: 'ZCash', price: 445, key: 'ZEC' },])
+        { name: 'Ethereum', price: 'Loading...', key: 'ETH' },
+        { name: 'Ethereum classic', price: 'Loading...', key: 'ETC' },
+        { name: 'EOS', price: 'Loading...', key: 'EOS' },
+        { name: 'Cardano', price: 'Loading...', key: 'ADA' },
+        { name: 'Dogecoin', price: 'Loading...', key: 'DOGE' },
+        // { name: 'IOTA', price: 'Loading...', key: 'MIOTA' },
+        { name: 'LiteCoin', price: 'Loading...', key: 'LTC' },
+        { name: 'Maker', price: 'Loading...', key: 'MKR' },
+        { name: 'Monero', price: 'Loading...', key: 'XMR' },
+        { name: 'Stellar', price: 'Loading...', key: 'XLM' },
+        { name: 'Tron', price: 'Loading...', key: 'TRX' },
+        { name: 'ZCash', price: 'Loading...', key: 'ZEC' },])
     const options = {
         responsive: true,
         plugins: {
@@ -57,7 +57,25 @@ function WorkSpace() {
 
         },
     };
+    const getCurrentPrice = async () => {
+        let tempCoins = [...coins]
 
+        await Promise.all(tempCoins.forEach(async (coin, id) => {
+            try {
+                let response = await axios.get("https://api.binance.com/api/v3/ticker/price?symbol=" + coin.key + 'USDT')
+                if (response.status == 200) {
+                    console.log(response.data.price)
+                    tempCoins[id].price = (response.data.price)
+                } else {
+                    return 'error'
+                }
+            } catch (error) {
+
+            }
+        }))
+
+        setCoins([...tempCoins])
+    }
 
 
     const getForecastData = async (coinName) => {
@@ -202,26 +220,12 @@ function WorkSpace() {
         Tooltip,
         Legend
     );
-    const CoinComponent = ({ coin }) => {
-        const [price, setPrice] = useState()
-
-        const getCurrentPrice = async (key) => {
-            try {
-                let response = await axios.get("https://api.binance.com/api/v3/ticker/price?symbol=" + key + 'USDT')
-                if (response.status == 200) {
-                    return setPrice(response.data.price)
-                } else {
-                    return 'error'
-                }
-            } catch (error) {
-
-            }
-        }
+    const CoinComponent = ({ coin, id }) => {
 
 
-        useEffect(() => {
-            getCurrentPrice(coin.key)
-        }, [])
+
+
+
 
 
 
@@ -237,13 +241,15 @@ function WorkSpace() {
 
         >
             <h3>{coin.name}</h3>
-            <p style={{ fontSize: 14, marginTop: 5 }} >{price ? Number(price).toFixed(2) : 'loading..'}</p>
+            <p style={{ fontSize: 14, marginTop: 5 }} >${Number(coin.price).toFixed(2)}</p>
         </div>)
     }
     useEffect(() => {
         foreCastLabelCreator()
         getForecastData('ethereum')
         getCoinData()
+        getCurrentPrice()
+        setSelectedCoin(coins[0])
     }, [])
 
 
@@ -252,7 +258,9 @@ function WorkSpace() {
             className='workSpace'
             style={{
                 background: `url(${HomeImg})`,
-                backgroundSize: 'cover'
+                backgroundSize: 'contain',
+                backgroundRepeat: 'no-repeat',
+                backgroundSize: '100% 100%'
             }}
         >
             <Navbar />
@@ -263,7 +271,7 @@ function WorkSpace() {
 
                 >
                     <div className='coinWrpr' >
-                        {coins.map(coin => <CoinComponent coin={coin} />)}
+                        {coins.map((coin, id) => <CoinComponent id={id} coin={coin} />)}
 
 
                     </div>
@@ -283,14 +291,14 @@ function WorkSpace() {
                             <>
                                 <div className='heading_wrpr' >
                                     <h2>{selectedCoin.key}</h2>
-                                    <p>${selectedCoin.price}</p>
+                                    <p>${Number(selectedCoin.price).toFixed(2)}</p>
                                 </div>
 
                                 <div
                                     style={{ paddingTop: 50, backdropFilter: `blur(100px)` }}
                                 >
 
-                                    <p>Tomorrow's price: {forecastData[29]}</p>
+                                    <p>Tomorrow's price: ${forecastData[29]}</p>
                                     <Line
                                         options={options}
                                         data={data1}

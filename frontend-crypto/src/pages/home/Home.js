@@ -1,7 +1,7 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import Navbar from '../../components/navbar/Navbar'
-import HomeImg from '../../assets/images/home.png'
+import HomeImg from '../../assets/images/home.jpg'
 import './home.css'
 function Home() {
     const navigate = useNavigate()
@@ -9,7 +9,9 @@ function Home() {
         <div className='home'
             style={{
                 background: `url(${HomeImg})`,
-                backgroundSize: 'cover'
+                backgroundSize: 'contain',
+                backgroundRepeat: 'no-repeat',
+                backgroundSize: '100% 100%'
             }}
         >
             <Navbar />
